@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE configuration
+  PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+	<typeAliases>
+		<typeAlias type="com.edu.springboard.domain.ReBoard" alias="ReBoard"/>
+		<typeAlias type="com.edu.springboard.domain.Gallery" alias="Gallery"/>
+		<typeAlias type="com.edu.springboard.domain.Photo" alias="Photo"/>
+		<typeAlias type="com.edu.springboard.domain.Notice" alias="Notice"/>
+	</typeAliases>
+
+  <mappers>
+    <mapper resource="com/edu/springboard/mybatis/ReBoardMapper.xml"/>
+    <mapper resource="com/edu/springboard/mybatis/GalleryMapper.xml"/>
+    <mapper resource="com/edu/springboard/mybatis/PhotoMapper.xml"/>
+    <mapper resource="com/edu/springboard/mybatis/NoticeMapper.xml"/>
+  </mappers>
+</configuration>

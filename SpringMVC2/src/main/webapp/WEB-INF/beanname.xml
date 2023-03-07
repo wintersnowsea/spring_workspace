@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans
+	xmlns="http://www.springframework.org/schema/beans"
+	xmlns:p="http://www.springframework.org/schema/p"
+	
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+	<!-- 이 웹어플리케이션에서 사용할 하위 컨트롤러 등록 : New 하지 않아도 메모리에 올라감 -->
+	<bean class="org.springframework.web.servlet.handler.BeanNameUrlHandlerMapping">
+		<property name="alwaysUseFullPath" value="true"/>
+	</bean>
+	
+	
+	<!-- 5가지 HandlerMapping 중 BeanNameUrlHandlerMapping 학습 -->
+	<!-- board 관련 컨트롤러 매핑 -->
+	<bean name="/client/board/list" 				class="com.edu.mvc2.controller.board.ListController">
+		<property name="boardService" 	ref="boardServiceImpl" />
+	</bean>
+	<bean name="/client/board/registform" 	class="com.edu.mvc2.controller.board.RegistFormController"/>
+	
+	<bean name="/client/board/regist" 			class="com.edu.mvc2.controller.board.RegistController">
+		<!-- 빈과 빈끼리 연결짓는 것을 weaving이라 한다 -->
+		<property name="boardService" 	ref="boardServiceImpl" />
+	</bean>
+	
+	<bean name="/client/board/detail" 			class="com.edu.mvc2.controller.board.DetailController">
+		<property name="boardService" 	ref="boardServiceImpl" />
+	</bean>
+	<bean name="/client/board/edit" 			class="com.edu.mvc2.controller.board.EditController">
+			<property name="boardService" 	ref="boardServiceImpl" />
+	</bean>
+	<bean name="/client/board/delete" 			class="com.edu.mvc2.controller.board.DeleteController">
+			<property name="boardService" 	ref="boardServiceImpl" />
+	</bean>
+	
+	<!-- gallery 관련 컨트롤러 매핑 -->
+	<bean name="/client/gallery/registform" class="com.edu.mvc2.controller.gallery.RegistFormController"  />
+	<bean name="/client/gallery/regist" class="com.edu.mvc2.controller.gallery.RegistController"  />
+	
+	
+	<!-- 하위 컨트롤러가 반환하는 뷰의 이름을 해석하여 View를 반환해주는 해석자 등록하자
+		스프링에서 jsp 매핑시 주로 사용하는 방식은
+		InternalResourceViewResolver -->
+	<bean class="org.springframework.web.servlet.view.InternalResourceViewResolver"
+		p:prefix="/WEB-INF/views/"
+		p:suffix=".jsp"/>
+		
+	
+	
+</beans>

@@ -1,0 +1,6 @@
+스프링이 지원하는 DB 연동기술
+Mybatis, Jdbc, Hibernate, JPA
+
+---------
+응답정보 유형 :     jsp(ModelAndView) - ViewResolver 관여
+            데이터 (@ResponseBody)

@@ -1,0 +1,26 @@
+2000년 로이필딩 (HTTP 프로토콜)
+우수한 HTTP 제대로 안씀 (원래 목적대로)
+URL, URI : 자원의 위치, REST(Representational State Transfer) API
+-> 최대한 HTTP URL 본연의 목적에 맞게 데이터를 표현하자
+--------------------------------------------------------------------------------------
+REST : 코드나 기술을 의미하는게 아니라, HTTP 아키텍쳐 (HTTP 표현상의 원리)
+RESTful 하다의 의미? REST원칙을 지켰는지 여부를 의미
+1) 자원(URI 명칭)은 명사로 표현
+2) 동사적 표현은 http method 로 표현
+3) '/' 상하관계를 표현
+   ex) /samsung/members
+4) 복잡한 합성어의 경우 하이픈 '-' 으로 구분을 지어라 (언더바 쓰지마라)
+
+[HTTP 메서드]
+GET으로 요청	/notices		: 목록
+GET으로 요청	/notices/23		: 23번 글 가져오기(상세보기)
+POST로 요청	/notices		: 내용 -->요청메서드로 구분
+DELETE로 요청	/notices/23		: 삭제
+PUT			/notices		: 수정 --> get방식으로 수정시 /notices/23으로
+
+-------------------------------------------------------------------------------------
+글목록    GET 7777/boards
+상세보기    /board/detail?idx=5
+글쓰기    /board/regist
+수정        /board/edit
+삭제        /board/del

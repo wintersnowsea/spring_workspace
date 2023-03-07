@@ -1,0 +1,11 @@
+main.html - SPA 파일명
+
+서버측
+회원테이블명 : member
+MemberMapper.xml
+MemberDAO.java
+list.jsp (회원 목록 json 출력)
+regist.jsp (회원 등록)
+delete.jsp (회원 삭제)
+update.jsp (회원 수정)
+회원 상세보기 기능은 기존에 이미 불러온 json 사용하기

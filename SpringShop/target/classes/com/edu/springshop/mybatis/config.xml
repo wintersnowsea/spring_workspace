@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE configuration
+  PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+	<typeAliases>
+		<typeAlias type="com.edu.springshop.admin.domain.Category"	 alias="Category"/>
+		<typeAlias type="com.edu.springshop.admin.domain.Product"		 alias="Product"/>
+		<typeAlias type="com.edu.springshop.admin.domain.Pimg"			 alias="Pimg"/>
+		<typeAlias type="com.edu.springshop.admin.domain.Cart"			 alias="Cart"/>
+		<typeAlias type="com.edu.springshop.admin.domain.Member"		 alias="Member"/>
+		<typeAlias type="com.edu.springshop.admin.domain.Admin"		 alias="Admin"/>
+	</typeAliases>
+ 
+  <mappers>
+    <mapper resource="com/edu/springshop/mybatis/CategoryMapper.xml"/>
+    <mapper resource="com/edu/springshop/mybatis/ProductMapper.xml"/>
+    <mapper resource="com/edu/springshop/mybatis/PimgMapper.xml"/>
+    <mapper resource="com/edu/springshop/mybatis/CartMapper.xml"/>
+    <mapper resource="com/edu/springshop/mybatis/MemberMapper.xml"/>
+    <mapper resource="com/edu/springshop/mybatis/AdminMapper.xml"/>
+  </mappers>
+</configuration>

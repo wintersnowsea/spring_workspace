@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans:beans xmlns="http://www.springframework.org/schema/mvc"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:beans="http://www.springframework.org/schema/beans"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="http://www.springframework.org/schema/mvc https://www.springframework.org/schema/mvc/spring-mvc.xsd
+		http://www.springframework.org/schema/beans https://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/context https://www.springframework.org/schema/context/spring-context.xsd">
+
+	<!-- 개발자가 핸들러매핑을 등록하지 않으면 디폴트 핸들러 매핑이 적용된다
+		DefaultAnnotationHandlerMapping
+		: xml 설정파일을 간소화시키기 위해 더이상 빈들간의 매핑을 xml에서 하기 보다는 java5버전부터 지원하는 Annotation 기반으로 매핑을 처리하는 방식 
+		@Annotation (주석이지만 프로그램에서 사용되는 주석)-->
+
+	<!-- DispatcherServlet Context: defines this servlet's request-processing infrastructure -->
+	
+	<!-- Enables the Spring MVC @Controller programming model -->
+	<annotation-driven />
+
+	<!-- Handles HTTP GET requests for /resources/** by efficiently serving up static resources in the ${webappRoot}/resources directory -->
+	<!-- 정적자원(html, css, js, image 등등)을 컨트롤러 매핑에 의하지 않고 단순 링크만으로도 접근가능하게 하기 -->
+	<resources mapping="/resources/**" location="/resources/" />
+
+	<!-- Resolves views selected for rendering by @Controllers to .jsp resources in the /WEB-INF/views directory -->
+	<beans:bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+		<beans:property name="prefix" value="/WEB-INF/views/" />
+		<beans:property name="suffix" value=".jsp" />
+	</beans:bean>
+	
+	<!-- @가 붙은 스프링의 컴포넌트의 대상이 되는 객체는 전부 찾아서 인스턴스를 생성해준다 -->
+	<context:component-scan base-package="com.edu.mvc3.controller"/>
+	
+	
+	<!-- <beans:bean id="fileManager" class="com.edu.mvc3.model.util.FileManager"/>
+	<beans:bean id="galleryController" class="com.edu.mvc3.controller.gallery.GalleryController">
+		<beans:property name="fileManager" ref="fileManager"/>
+	</beans:bean> -->
+	
+	<beans:bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+        <beans:property name="maxUploadSizePerFile" value="3145728"></beans:property>
+    </beans:bean>
+	
+	
+	
+</beans:beans>

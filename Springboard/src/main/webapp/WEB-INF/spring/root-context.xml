@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:jee="http://www.springframework.org/schema/jee"
+	xmlns:p="http://www.springframework.org/schema/p"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:tx="http://www.springframework.org/schema/tx"
+	
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+									http://www.springframework.org/schema/jee http://www.springframework.org/schema/jee/spring-jee.xsd
+									http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
+									http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-3.0.xsd
+									http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-3.0.xsd">
+	
+	<!-- Root Context: defines shared resources visible to all other web components 
+		여기서 db커낵션을 처리한다>마이바티스가 아닌 스프링이 주도하여 db를 연동한다 / 
+		 스프링의 트랜잭션 도움을 받기 위함이므로 여기서 jndi를 검색하여 커넥션 보유하자-->
+	<jee:jndi-lookup 
+	id="dataSource"
+	jndi-name="jdbc/mysql"
+	resource-ref="true"/>
+		
+	<!-- 기술에 따른 트랜잭션 매니저를 각각 선택하여 빈으로 등록 
+		JDBC - DataSourceTransactionManager
+		Mybatis -  DataSourceTransactionManager
+		Hibernate - HibernateTransactionManager
+	-->	
+	<bean id="transactionManager" 
+		class="org.springframework.jdbc.datasource.DataSourceTransactionManager" 
+		p:dataSource-ref="dataSource"/>
+	
+	<!-- SqlSessionTemplate을 얻기 위한 SqlSessionFactoryBean 등록 
+		원래 mybatis가 취득했던 커넥션을 스프링이 뺏어왔기 때문에 dataSource-ref로 디비정보를 sqlSessionFactoryBean에 넣어줘야한다
+		-->
+	<bean id="sqlSessionFactoryBean" 
+		class="org.mybatis.spring.SqlSessionFactoryBean" 
+		p:dataSource-ref="dataSource"
+		p:configLocation="classpath:com/edu/springboard/mybatis/config.xml"/>
+	
+	<bean id="sqlSessionTemplate" class="org.mybatis.spring.SqlSessionTemplate">
+		<constructor-arg name="sqlSessionFactory" ref="sqlSessionFactoryBean" />
+	</bean>
+	
+	<!-- DB연동 기술 중 Mybatis-Spring JDBC 사용을 위한 설정 -->
+	<bean id="jdbcTemplate" class="org.springframework.jdbc.core.JdbcTemplate" p:dataSource-ref="dataSource" />
+	
+	<context:component-scan base-package="com.edu.springboard.model" />
+	
+	<!-- 트랜잭션을 적용하는 방법은 크게 2가지가 있다
+		1) xml에서 적용하는 방식 - 선언적 방식
+			- 일괄적용시 유리
+			
+		2) java 코드에서 어노테이션을 이용하는 방법
+			- 개별적 적용시 유리
+	 -->
+	 <aop:config>
+	 <!-- 트랜잭션을 어떠한 메서드들에 적용할지 패턴을 명시 -->
+	 	<aop:pointcut expression="execution(public * com.edu.springboard.model..*Impl.*(..))" id="txcut"/>
+	 	<aop:advisor advice-ref="txAdvice" pointcut-ref="txcut"/>
+	 </aop:config>
+	 
+	 <!-- 현재 어플리케이션이 사용중인 db 연동기술 적용 -->
+	 <tx:advice id="txAdvice" transaction-manager="transactionManager" >
+	 	<tx:attributes>
+	 		<tx:method name="update" propagation="REQUIRED"/>
+	 	</tx:attributes>
+	 </tx:advice>
+	
+</beans>

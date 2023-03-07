@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app version="3.0" xmlns="http://java.sun.com/xml/ns/javaee"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://java.sun.com/xml/ns/javaee https://java.sun.com/xml/ns/javaee/web-app_3_0.xsd">
+
+	<!-- The definition of the Root Spring Container shared by all Servlets and Filters -->
+	<!-- application 내장객체에 전달할 초기화 파라미터 -->
+	<context-param>
+		<param-name>contextConfigLocation</param-name>
+		<param-value>/WEB-INF/root-context.xml</param-value>
+	</context-param>
+	
+	<!-- Creates the Spring Container shared by all Servlets and Filters-->
+	<!-- 서버 가동 및 중지 이벤트를 처리하는 리스너 -->
+	<listener>
+		<listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
+		<!-- <listener-class>com.edu.mvc2.listener.ContextLoaderListener</listener-class> -->
+	</listener>
+	
+	<!-- 
+		클라이언트의 요청이 들어올 때 지금까지는 서블릿이 제일 먼저 해당 요청을 처리하는 것 처럼 보였지만
+		사실 서블릿이 요청을 받기 전에 먼저 관여할 수 있는 객체가 지원되는데, 이 객체를 가리켜 필터라 한다
+ -->
+		
+	 <filter>
+	 	<filter-name>encodingFilter</filter-name>
+	 	<filter-class>org.springframework.web.filter.CharacterEncodingFilter</filter-class>
+		<init-param>
+			<param-name>encoding</param-name>
+			<param-value>UTF-8</param-value>
+		</init-param>
+	 </filter>
+	 <filter-mapping>
+		<filter-name>encodingFilter</filter-name>
+		<url-pattern>/*</url-pattern>	 
+	 </filter-mapping>
+	 
+	<!-- Processes application requests 
+		개발자가 스프링빈 xml을 초기화 파라미터에 명시하지 않을 경우 디폴트 파일명이 지정된다
+		즉 파일명의 명명규칙이 있다
+		서블릿이름-servlet.xml
+		ex) dispatcher : WEB-IMF/dispatcher-servlet.xml
+			 babo : WEB-IMF/babo-servlet.xml
+	-->
+	
+	<!-- 우리만의 서블릿을 만들어서 확인해보자 -->
+	<!--
+	<servlet>
+		<servlet-name>test</servlet-name>
+		<servlet-class>com.edu.mvc2.filter.FilterServlet</servlet-class>
+		<load-on-startup>1</load-on-startup>
+	</servlet>
+		
+	<servlet-mapping>
+		<servlet-name>test</servlet-name>
+		<url-pattern>/test</url-pattern>
+	</servlet-mapping>
+	-->
+	
+	<servlet>
+		<servlet-name>dispatcher</servlet-name>
+		<servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
+		<init-param>
+			<param-name>contextConfigLocation</param-name>
+			<param-value>WEB-INF/beanname.xml</param-value>
+		</init-param>
+		<load-on-startup>1</load-on-startup>
+	</servlet>
+		
+	<servlet-mapping>
+		<servlet-name>dispatcher</servlet-name>
+		<url-pattern>/client/*</url-pattern>
+	</servlet-mapping>
+	
+	<!-- 관리자 모드와 관련된 모든 요청을 처리하는 서블릿 매핑 -->
+		<servlet>
+		<servlet-name>adminServlet</servlet-name>
+		<servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
+		<init-param>
+			<param-name>contextConfigLocation</param-name>
+			<param-value>WEB-INF/admin-config.xml</param-value>
+		</init-param>
+		<load-on-startup>1</load-on-startup>
+	</servlet>
+		
+	<servlet-mapping>
+		<servlet-name>adminServlet</servlet-name>
+		<url-pattern>/admin/*</url-pattern>
+	</servlet-mapping>
+	 
+
+</web-app>
