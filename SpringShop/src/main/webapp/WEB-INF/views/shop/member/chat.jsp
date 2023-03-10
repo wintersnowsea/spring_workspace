@@ -1,3 +1,4 @@
+<%@page import="java.util.List"%>
 <%@ page contentType="text/html;charset=UTF-8"%>
 
 <!DOCTYPE html>
@@ -31,21 +32,17 @@
 		<div class="row mt-3">
 			<div class="col">
 				<form id="form1">
-					<h2>Login</h2>
+					<h2>상담</h2>
 					<div class="form-group mt-3">
-						<label for="id">ID:</label>
-						<input type="text"	class="form-control" placeholder="Enter ID..." name="id">
+						<label for="t_send">상담내용:</label>
+						<input type="text"	class="form-control" placeholder="상담하실 메세지를 입력하세요..." id="t_send">
 					</div>
 					<div class="form-group">
-						<label for="id">Pass:</label>
-						<input type="text"	class="form-control" placeholder="Enter pass..." name="pass">
+						<label for="t_receive">답변:</label>
+						<textarea	class="form-control" id="t_receive"></textarea>
 					</div>
-					<button type="button" class="btn btn-success" id="bt_google">Google 로그인</button>
-					<button type="button" class="btn btn-success" id="bt_googleauth">Google 인증</button>
-					<button type="button" class="btn btn-success" id="bt_naver">Naver 로그인</button>
-					<button type="button" class="btn btn-success" id="bt_kakao">KaKao 로그인</button>
-					<button type="button" class="btn btn-success" id="bt_login">Login</button>
-					<button type="button" class="btn btn-success" id="bt_regist">가입</button>
+
+					<button type="button" class="btn btn-primary" id="bt_send">Send</button>
 				</form>
 			</div>
 		</div>
@@ -68,33 +65,47 @@
 <%@ include file="../inc/footer_link.jsp" %>
 
 <script type="text/javascript">
+let ws;
+//웹소켓을 이용한 서버에 접속
+function connect() {
+	ws = new WebSocket("ws://localhost:7777/chat");
+	
+	ws.onopen=function(){
+		console.log("서버에 접속된 onopen");
+	}
+	
+	ws.onmessage=function(e){
+		console.log("서버가 보낸 데이터", e.data);
+		
+		//서버가 보낸 메세지를 area에 누적
+		$("#t_receive").append(e.data+"\n");
+	}
+	
+	ws.onclose=function(e){
+		console.log("서버와 접속이 끊김");
+		//끊기는 시점을 발견할 때, 1초의 시간 뒤에 다시 재접속하여 프로그램의 안정성을 높이자
+		setTimeout("connect",1000);
+	}  
+	
+	ws.onerror=function(){
+		console.log("에러발생", e);
+	}
+	
+}
 
+//서버에 메세지 전송하기
+function sendMsg(){
+	let msg = $("#t_send").val();
+	ws.send(msg);
+	$("#t_send").val(""); //입력값 초기화
+}
 
 $(function(){
+	connect();
 	
-
-	$("#bt_googleauth").click(function(){
-		location.href="<%=request.getAttribute("url")%>";
-	});
-	
-	
-	$("#bt_google").click(function(){
-		location.href="/member/authform/google";
-		
-		/*
-		$.ajax({
-			url:"/member/authform/google",
-			type:"GET",
-			success:function(result, status, xhr){
-				console.log(result.msg);
-				location.href=result.msg; //인증화면 주소로 요청
-			}
-		});
-		*/
-	});
-
-	
-	
+	$("#bt_send").click(function(){
+		sendMsg();
+	});	
 });
 </script>
 </body>

@@ -4,9 +4,11 @@
 	xmlns:beans="http://www.springframework.org/schema/beans"
 	xmlns:context="http://www.springframework.org/schema/context"
 	xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:websocket="http://www.springframework.org/schema/websocket"
 	
 	xsi:schemaLocation="http://www.springframework.org/schema/mvc https://www.springframework.org/schema/mvc/spring-mvc.xsd
 		http://www.springframework.org/schema/aop https://www.springframework.org/schema/aop/spring-aop.xsd
+		http://www.springframework.org/schema/websocket https://www.springframework.org/schema/websocket/spring-websocket.xsd
 		http://www.springframework.org/schema/beans https://www.springframework.org/schema/beans/spring-beans.xsd
 		http://www.springframework.org/schema/context https://www.springframework.org/schema/context/spring-context.xsd">
 
@@ -73,6 +75,34 @@
 	<beans:bean
 		id="shopGlobalException"
 		class="com.edu.springshop.aop.ShopGlobalException"/>
+		
+<!-- 웹소켓 핸들러 등록 -->
+    <beans:bean id="chatHandler" class="com.edu.springshop.chat.ChatHandler"/>
+    <!-- 웹소켓 설정 -->
+    <websocket:handlers>
+        <websocket:mapping handler="chatHandler" path="/chat"/>
+        <websocket:handshake-interceptors>
+            <beans:bean class="org.springframework.web.socket.server.support.HttpSessionHandshakeInterceptor"/>
+        </websocket:handshake-interceptors>
+    </websocket:handlers>
+    
+    
+    <!-- 구글로그인 관련 정보 등록 -->
+    <beans:bean id="googleConnectionFactory" class="org.springframework.social.google.connect.GoogleConnectionFactory">
+    	<!-- google cloud platform에서 발급받은 client ID -->
+    	<beans:constructor-arg value="414989212246-1vqprd80lf7ij8ej3tna00541bkvr314.apps.googleusercontent.com" />
+
+    	<!-- google cloud platform에서 발급받은 client Secret -->
+    	<beans:constructor-arg value="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" />
+    </beans:bean>
+	<beans:bean class="org.springframework.social.oauth2.OAuth2Parameters">
+		<!-- Resource Owner 로부터 어떠한 정보를 수집할지 그 범위 설정(신청할때 한거) -->
+		<beans:property name="scope" value="https://www.googleapis.com/auth/userinfo.email https://www.googleapis.com/auth/userinfo.profile" />
+		
+		<!-- Resource Owner 가 인증할 때, 콜백받을 우리 웹사이트의 URI (우리가 만든 컨트롤러가) -->
+		<beans:property name="redirectUri" value="http://localhost:7777/member/auth/google"/>
+	</beans:bean>
 	
+	<beans:bean id="googleLogin" class="com.edu.springshop.sns.GoogleLogin"/>
 	
 </beans:beans>
