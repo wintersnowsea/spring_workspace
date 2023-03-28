@@ -17,6 +17,8 @@ import com.edu.springshop.exception.HashException;
 import com.edu.springshop.exception.MemberException;
 import com.edu.springshop.model.member.MemberService;
 import com.edu.springshop.sns.GoogleLogin;
+import com.edu.springshop.sns.KakaoLogin;
+import com.edu.springshop.sns.NaverLogin;
 import com.edu.springshop.util.Message;
 
 @RestController
@@ -28,6 +30,12 @@ public class RestMemberController {
 	
 	@Autowired
 	private GoogleLogin googleLogin;
+	
+	@Autowired
+	private KakaoLogin kakaoLogin;
+	
+	@Autowired
+	private NaverLogin naverLogin;
 	
 	//회원가입 요청처리
 	@PostMapping("/member")
@@ -42,12 +50,12 @@ public class RestMemberController {
 		return entity;
 	}
 	
-	/*
-	//구글로그인 인증화면(사용자가 보게될) 요청처리
+	
+	//로그인폼에서 사용할 sns 인증화면의 링크 주소 요청을 처리
 		@GetMapping("/member/authform/google")
-		public ResponseEntity<Message> getUrl(HttpServletRequest request, Member member){
-			//
-			String url = googleLogin.handle();
+		public ResponseEntity<Message> getGoogleUrl(HttpServletRequest request, Member member){
+			//사용자가 보게될 인증화면에 대한 주소 구하기
+			String url = googleLogin.getGrantUrl(); //인증화면으로 가기위한 링크주소 얻기
 			
 			Message message = new Message();
 			message.setMsg(url);
@@ -56,7 +64,36 @@ public class RestMemberController {
 			
 			return entity;
 		}
-	 */
+		
+		//로그인폼에서 사용할 sns 인증화면의 링크 주소 요청을 처리
+		@GetMapping("/member/authform/kakao")
+		public ResponseEntity<Message> getKakaoUrl(HttpServletRequest request, Member member){
+			//사용자가 보게될 인증화면에 대한 주소 구하기
+			String url = kakaoLogin.getGrantUrl(); //인증화면으로 가기위한 링크주소 얻기
+			
+			Message message = new Message();
+			message.setMsg(url);
+			
+			ResponseEntity entity = new ResponseEntity<Message>(message, HttpStatus.OK);
+			
+			return entity;
+		}
+		
+		//후에 변수받을 때@GetMapping("/member/authform/{}") 매개변수에 @pasvalus????파스배러블??
+		//로그인폼에서 사용할 sns 인증화면의 링크 주소 요청을 처리
+		@GetMapping("/member/authform/naver")
+		public ResponseEntity<Message> getNaverUrl(HttpServletRequest request, Member member){
+			//사용자가 보게될 인증화면에 대한 주소 구하기
+			String url = naverLogin.getGrantUrl(); //인증화면으로 가기위한 링크주소 얻기
+			
+			Message message = new Message();
+			message.setMsg(url);
+			
+			ResponseEntity entity = new ResponseEntity<Message>(message, HttpStatus.OK);
+			
+			return entity;
+		}
+	 
 	
 	/*
 	@ExceptionHandler(HashException.class)

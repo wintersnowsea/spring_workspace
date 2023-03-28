@@ -19,3 +19,25 @@ add regdate timestamp default now();
 alter table member
 modify column pass varchar(64);
 
+--삭제 후 다시 만들기 (23/03/27)
+drop table member;
+
+create table sns(
+	sns_idx int primary key auto_increment
+	, sns_name varchar(20)
+) default character set utf8;
+
+insert into sns(sns_name) values('google');
+insert into sns(sns_name) values('kakao');
+insert into sns(sns_name) values('naver');
+insert into sns(sns_name) values('homepage');
+
+create table member(
+	member_idx int primary key auto_increment
+	, uid varchar(30)
+	, nickname varchar(25)
+	, sns_idx int
+	, constraint fk_sns_member foreign key (sns_idx) references sns(sns_idx)
+	, regdate timestamp default now()
+) default character set utf8;
+

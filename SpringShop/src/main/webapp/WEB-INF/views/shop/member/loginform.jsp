@@ -41,7 +41,6 @@
 						<input type="text"	class="form-control" placeholder="Enter pass..." name="pass">
 					</div>
 					<button type="button" class="btn btn-success" id="bt_google">Google 로그인</button>
-					<button type="button" class="btn btn-success" id="bt_googleauth">Google 인증</button>
 					<button type="button" class="btn btn-success" id="bt_naver">Naver 로그인</button>
 					<button type="button" class="btn btn-success" id="bt_kakao">KaKao 로그인</button>
 					<button type="button" class="btn btn-success" id="bt_login">Login</button>
@@ -69,30 +68,33 @@
 
 <script type="text/javascript">
 
+function gotoAuthForm(sns) {
+	//sns사업자가 미리 만들어놓은 인증화면 주소를 요청해야한다
+	$.ajax({
+		url:"/rest/member/authform/"+sns,
+		type:"get",
+		success:function(result, status, xhr){
+			console.log("인증주소는 ", result.msg);
+			location.href=result.msg;
+		}
+	});
+}
 
 $(function(){
 	
-
-	$("#bt_googleauth").click(function(){
-		location.href="<%=request.getAttribute("url")%>";
-	});
-	
-	
 	$("#bt_google").click(function(){
-		location.href="/member/authform/google";
-		
-		/*
-		$.ajax({
-			url:"/member/authform/google",
-			type:"GET",
-			success:function(result, status, xhr){
-				console.log(result.msg);
-				location.href=result.msg; //인증화면 주소로 요청
-			}
-		});
-		*/
+		//sns사업자가 미리 만들어놓은 인증화면 주소를 요청해야한다
+		//따라서 주소 및 파라미터명이 이미 정해져 있다 (구글 개발자 사이트에 공시되어 있다)
+		gotoAuthForm("google");
 	});
 
+	$("#bt_kakao").click(function(){
+		gotoAuthForm("kakao");
+	});
+	
+	$("#bt_naver").click(function(){
+		gotoAuthForm("naver");
+	});
 	
 	
 });

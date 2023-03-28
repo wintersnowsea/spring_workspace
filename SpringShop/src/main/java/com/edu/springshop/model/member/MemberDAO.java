@@ -5,9 +5,8 @@ import java.util.List;
 import com.edu.springshop.admin.domain.Member;
 
 public interface MemberDAO {
-	public List selectAll();
-	public Member select(Member member);
+
+	public Member selectById(Member member);
 	public void insert(Member member);
-	public void update(Member member);
-	public void delete(Member member);
+
 }

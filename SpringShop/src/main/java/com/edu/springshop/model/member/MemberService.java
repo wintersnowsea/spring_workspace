@@ -5,9 +5,6 @@ import java.util.List;
 import com.edu.springshop.admin.domain.Member;
 
 public interface MemberService {
-	public List selectAll();
-	public Member select(Member member);
-	public void regist(Member member); //암호화, 이메일, db
-	public void update(Member member);
-	public void unregist(Member member); //이메일까지
+	public Member selectById(Member member);
+	public void regist(Member member); //insert, 조회, 메일전송 등
 }

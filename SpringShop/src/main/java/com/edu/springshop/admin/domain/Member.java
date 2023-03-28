@@ -5,11 +5,9 @@ import lombok.Data;
 @Data
 public class Member {
 	private int member_idx;
-	private String id;
-	private String pass;
-	private String name;
-	private String email;
-	private String addr1;
-	private String addr2;
-	private String regdate;
+	private String uid; //sns 공통
+	private String nickname; //sns 공통
+	private String regdate; //가입일
+	
+	private SnS sns; //부모를 has a 로 보유 (association 대상)
 }

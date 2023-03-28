@@ -9,3 +9,4 @@
 <script src="/resources/shop/js/owl.carousel.min.js"></script>
 <script src="/resources/shop/js/jquery.nicescroll.min.js"></script>
 <script src="/resources/shop/js/main.js"></script>
+

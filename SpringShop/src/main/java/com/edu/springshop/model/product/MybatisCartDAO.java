@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import com.edu.springshop.admin.domain.Cart;
+import com.edu.springshop.admin.domain.Member;
 import com.edu.springshop.exception.CartException;
 
 @Repository
@@ -16,8 +17,8 @@ public class MybatisCartDAO implements CartDAO {
 	private SqlSessionTemplate sqlSessionTemplate;
 	
 	@Override
-	public List selectAll() {
-		return sqlSessionTemplate.selectList("Cart.selectAll");
+	public List selectAll(Member member) {
+		return sqlSessionTemplate.selectList("Cart.selectAll", member);
 	}
 
 	@Override

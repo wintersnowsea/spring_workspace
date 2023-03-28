@@ -86,3 +86,17 @@ create table cart(
 	, ea int default 0
 	, constraint fk_product_cart foreign key(product_idx) references product(product_idx)
 ) default character set utf8;
+
+------------------------------------
+--장바구니 다시 만들기
+drop table cart;
+
+--장바구니 테이블
+create table cart(
+	cart_idx int primary key auto_increment
+	, member_idx int
+	, product_idx int
+	, ea int default 0
+	, constraint fk_product_cart foreign key(product_idx) references product(product_idx)
+	, constraint fk_member_cart foreign key(member_idx) references member(member_idx)
+) default character set utf8;

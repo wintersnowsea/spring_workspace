@@ -7,4 +7,5 @@ public class Cart {
 	private int cart_idx;
 	private Member member;
 	private Product product;
+	private int ea;
 }

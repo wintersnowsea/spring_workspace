@@ -1,12 +1,10 @@
-<%@page import="com.jspshop.domain.Product"%>
-<%@page import="com.jspshop.domain.Cart"%>
-<%@page import="com.jspshop.domain.Category"%>
+<%@page import="com.edu.springshop.admin.domain.Product"%>
+<%@page import="com.edu.springshop.admin.domain.Cart"%>
 <%@page import="java.util.List"%>
-<%@page import="com.jspshop.repository.CategoryDAO"%>
 <%@ page contentType="text/html;charset=UTF-8"%>
 <%
 	//장바구니를 세션으로 구현했으므로 세션에 들어있는 장바구니 관련객체를 끄집어 내서 표로 출력하자
-	List<Cart> sessionCartList=(List)session.getAttribute("cartList");
+	List<Cart> cartList=(List)session.getAttribute("cartList");
 	
 %>
 
@@ -28,11 +26,11 @@
 	이때 java에 대한 비전문가들은 java코드를 이해할 수 없기 때문에 그들이 좀 더 쉽게 다가갈 수 있도록
 	태그를 지원해준다 (협업때문에)
  -->
-	<%@ include file="./inc/main_navi.jsp" %>
+	<%@ include file="../inc/main_navi.jsp" %>
 <!-- Offcanvas Menu End -->
 
 <!-- Header Section Begin -->
-	<%@ include file="./inc/header_section.jsp" %>
+	<%@ include file="../inc/header_section.jsp" %>
 <!-- Header Section End -->
 
 	<!-- Shop Cart Section Begin -->
@@ -52,7 +50,7 @@
                                 </tr>
                             </thead>
                             <tbody>
-                            	<% for(Cart cart : sessionCartList){ %>
+                            	<% for(Cart cart : cartList){ %>
                             	<% Product product = cart.getProduct(); %>
                                 <tr>
                                     <td class="cart__product__item">
