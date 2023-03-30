@@ -23,3 +23,6 @@
     
      <!-- Vue -->
 	<script src="https://cdn.jsdelivr.net/npm/vue@2.7.14/dist/vue.js"></script>
+	
+	<!-- 결제연동 -->
+	 <script src="https://js.tosspayments.com/v1/payment-widget"></script>
