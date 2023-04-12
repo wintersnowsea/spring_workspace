@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="Member">
+	
+	<resultMap type="Member" id="memberMap">
+		<id column="member_idx" property="member_idx"/>
+		<result column="uid" property="uid"/>
+		<result column="nickname" property="nickname"/>
+		
+		<association 
+			column="sns_idx" 
+			property="sns" 
+			javaType="SnS" 
+			select="SnS.selectByIdx"/>
+	</resultMap>
+	
+	<!-- 회원가입 여부 확인 sns 고유id로 확인 -->
+	<select id="selectById" parameterType="Member" resultMap="memberMap">
+		select * from member where uid=#{uid}
+	</select>
+
+	<select id="select" parameterType="Member" resultMap="memberMap">
+		select * from member where member_idx=#{member_idx}
+	</select>
+			
+	<!-- Member  DTO 안에  SnS DTO를 이용해야 함 -->
+	<insert id="insert" parameterType="Member">
+		insert into member(sns_idx, uid, nickname) 
+		values(#{sns.sns_idx},#{uid},#{nickname})
+		
+		<!-- 회원 테이블에서 연락처,이메일, 주소 등등이 별도의 테이블로 파생되었기 때문에 이 파생된 테이블들이
+		보유할 Member 테이블의 idx 를 곧바로 추출.. -->
+		<selectKey keyColumn="member_idx" keyProperty="member_idx" resultType="int" order="AFTER">
+			select last_insert_id() as member_idx
+		</selectKey>		
+	</insert>
+
+</mapper>
+
